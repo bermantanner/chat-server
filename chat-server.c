@@ -189,9 +189,10 @@ uint8_t add_chat(char* username, char* message) {
 	msg.msgID = global_num;
 	
 	strncpy(msg.username, username, USERNAME_SIZE - 1);
-	//maybe null terminater? consider it.
+	msg.username[USERNAME_SIZE - 1] = '\0';
 	
 	strncpy(msg.message_content, message, MESSAGE_SIZE - 1);
+	msg.message_content[USERNAME_SIZE - 1] = '\0';
     	
 	char buffer[100];
     	time_t now = time(NULL);
@@ -269,10 +270,12 @@ void handle_post(char* path, int client_sock) {
 	//Grabbing username...
 	user_ptr = strstr(path, "user=");
 	user_ptr = user_ptr + 5;
-	length = delimiter_ptr - user_ptr + 1;
-       	username = malloc(length + 1);
-	strncpy(username, user_ptr, length - 1); 
+	length = delimiter_ptr - user_ptr;
+    username = malloc(length + 1);
+	strncpy(username, user_ptr, length); 
 	username[length] = '\0';
+
+	test_print(client_sock, username);
 
 	//Check if username is empty
 	if (strlen(username) <= 0) {
@@ -353,9 +356,9 @@ void handle_reaction(char* path, int client_sock) {
 	//Grabbing username...
 	user_ptr = strstr(path, "user=");
 	user_ptr = user_ptr + 5;
-	length = delimiter_ptr_1 - user_ptr + 1;
-       	username = malloc(length + 1);
-	strncpy(username, user_ptr, length - 1); 
+	length = delimiter_ptr_1 - user_ptr;
+    username = malloc(length + 1);
+	strncpy(username, user_ptr, length); 
 	username[length] = '\0';
 
 	//Check if username is empty
@@ -477,6 +480,6 @@ int main(int argc, char *argv[]) {
         	port = atoi(argv[1]);
 	}
 
-    	start_server(&handle_response, port);
+    start_server(&handle_response, port);
 	free_everything();
 }
