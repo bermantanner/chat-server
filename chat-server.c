@@ -163,7 +163,7 @@ void reset() {
 //------------------HELPER FUNCTIONS
 
 //------------------DATA HANDLING 
-//I think returning 0 means this failed, returing 1 means this succeeded???
+//Returning 0 means this failed
 uint8_t add_chat(char* username, char* message) {
 	//First we need to check if the list capacity is full, and needs to be expanded.
 	if (chat_list_count >= chat_list_cap) {
